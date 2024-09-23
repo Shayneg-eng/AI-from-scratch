@@ -176,15 +176,20 @@ class Network:
             except:
                 return 1
             
-    def erode(self, examplesPerEpoch, epochNumber):
+    def getErodeValuesForOneExample(self, MNIST_lable):
         
         outputActivations, HighestActivationIndex, HighestActivation = findHighestActivation(self.networkStructure[-1])
         
-        for example in range(examplesPerEpoch):
-            self.networkStructure[-1]
-            
-            
-            
+        optimalOutputNeuronValues = []
+        for i in range(len(outputActivations)):
+            if i != MNIST_lable:
+                optimalOutputNeuronValues.append(0)
+            else:
+                optimalOutputNeuronValues.append(1) #creating the optimal output list EX: [0, 0, 0, 0, 0, 0, 1, 0, 0, 0] would be a 6
+    
+        necessaryOutputChanges = []
+        for i in range(len(self.networkStructure[-1])):
+            necessaryOutputChanges.append(optimalOutputNeuronValues[i] - outputActivations[i]) # figuring out the changes that need to be made to the neural network to make obtain the optimal changes
             
             
             
@@ -233,6 +238,7 @@ network1.input(MNIST_data)
 network1.forwardPropagation()
 print(network1)
 mse = network1.getMSE(MNIST_lable)
+network1.getErodeValuesForOneExample(MNIST_lable)
 
 
 
